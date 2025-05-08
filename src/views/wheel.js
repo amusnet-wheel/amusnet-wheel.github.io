@@ -1,4 +1,4 @@
-import { html } from '@lit';
+import { html, mathml } from '@lit';
 
 /**
  * Main view rendering the fortune wheel.
@@ -8,26 +8,27 @@ import { html } from '@lit';
  */
 
 export function showWheel(ctx) {
-    const sections = [
-        'Quiz',
-        'Water Bottle',
-        'Shirt',
-        'Quiz',
-        'Water Bottle',
-        'Shirt',
-        'Quiz',
-        'Water Bottle',
-        'Shirt',
-        'Quiz',
-        'Water Bottle',
-        'Shirt',
-    ];
-
     ctx.render(wheelTemplate(sections));
 }
 
+const sections = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+];
+
 let animation = null;
 let previousEndDegree = 0;
+let previousEndSector = 0;
 
 /**
  * Template for the wheel and spin button.
@@ -44,6 +45,7 @@ const wheelTemplate = (sections) => html`
             </ul>
             <button type="button" @click=${spinWheel}>SPIN</button>
         </fieldset>
+        <div style="position: fixed; top: 0; left: 0" id="output">0</div>
     </div>
 `;
 
@@ -63,8 +65,11 @@ function spinWheel(event) {
         animation.cancel();
     }
 
-    const randomAdditionalDegrees = Math.random() * 360 + 1800;
-    const newEndDegree = previousEndDegree + randomAdditionalDegrees;
+    const sectorSize = 360 / 12;
+    const randomSectorOffset = (Math.random() * 12 | 0) + 60;
+    const randomAdditionalDegrees = randomSectorOffset * sectorSize;
+    
+    const newEndDegree = (previousEndSector * sectorSize) - randomAdditionalDegrees;
 
     animation = wheel.animate(
         [
@@ -72,11 +77,16 @@ function spinWheel(event) {
             { transform: `rotate(${newEndDegree}deg)` },
         ],
         {
-            duration: 4000,
+            duration: 10000,
             easing: 'cubic-bezier(0.440, -0.205, 0.000, 1.130)',
             fill: 'forwards',
         }
     );
 
-    previousEndDegree = newEndDegree;
+    previousEndSector -= randomSectorOffset;
+
+    const prizeIndex = Math.abs(previousEndSector % 12);
+    const prize = sections[prizeIndex];
+
+    document.getElementById('output').textContent = prize;
 }
