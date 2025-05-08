@@ -1,8 +1,8 @@
-/* 1. Use a more-intuitive box-sizing model */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 body {
     font-family: 'Montserrat', sans-serif;
+    background-color: lightcyan; /* Added for candy theme */
 }
 
 *,
@@ -11,12 +11,10 @@ body {
     box-sizing: border-box;
 }
 
-/* 2. Remove default margin */
 * {
     margin: 0;
 }
 
-/* 3. Enable keyword animations */
 @media (prefers-reduced-motion: no-preference) {
     html {
         interpolate-size: allow-keywords;
@@ -24,14 +22,12 @@ body {
 }
 
 body {
-    /* 4. Add accessible line-height */
     line-height: 1.5;
-    /* 5. Improve text rendering */
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
+    background-color: lightcyan; /* Added for candy theme - ensuring it's applied if there are multiple body rules */
 }
 
-/* 6. Improve media defaults */
 img,
 picture,
 video,
@@ -41,7 +37,6 @@ svg {
     max-width: 100%;
 }
 
-/* 7. Inherit fonts for form controls */
 input,
 button,
 textarea,
@@ -49,7 +44,6 @@ select {
     font: inherit;
 }
 
-/* 8. Avoid text overflows */
 p,
 h1,
 h2,
@@ -60,7 +54,6 @@ h6 {
     overflow-wrap: break-word;
 }
 
-/* 9. Improve line wrapping */
 p {
     text-wrap: pretty;
 }
@@ -73,9 +66,34 @@ h6 {
     text-wrap: balance;
 }
 
-/*
-    10. Create a root stacking context
-  */
+/* Styles for the spin trigger button */
+.spin-trigger-button {
+    position: fixed;
+    left: 5vw;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 15px 30px;
+    font-size: 1.5em;
+    color: white;
+    background-color: #ff4081; /* A vibrant pink, fitting the candy theme */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    z-index: 10;
+}
+
+.spin-trigger-button:hover {
+    background-color: #f50057;
+    transform: translateY(-50%) scale(1.05);
+}
+
+.spin-trigger-button:active {
+    background-color: #c51162;
+    transform: translateY(-50%) scale(1);
+}
+
 #root,
 #__next {
     isolation: isolate;
@@ -89,27 +107,37 @@ h6 {
     direction: ltr;
     display: grid;
     position: fixed;
-    height: 100vh;
-    transform: translate(47%, -50%);
-    top: 50%;
     right: 0;
+    top: 50%;
+    transform: translate(50%, -50%);
+    height: 100vh;
+
+    /* Become the frame */
+    padding: 15px;
+    background-color: deeppink;
+    border-radius: 50%;
+    /* 3D bevel effect for the frame */
+    border-top: 3px solid hotpink;
+    border-left: 3px solid hotpink;
+    border-bottom: 3px solid mediumvioletred;
+    border-right: 3px solid mediumvioletred;
 }
 
 .ui-wheel-of-fortune::after {
-    /* …your usual shape styling… */
-    width: 4cqi; /* tweak to taste */
+    /* Pointer */
+    width: 4cqi;
     height: 4cqi;
-    background-color: crimson;
+    background-color: #ffd700;
     clip-path: polygon(50% 100%, 100% 0, 0 0);
     content: '';
     position: absolute;
 
-    /* === NEW POSITION RULES === */
-    top: 50%; /* halfway down */
-    left: 0; /* flush left */
+    top: 50%;
+    left: 0;
     transform: translate(-50%, -50%) /* center the tip on the edge */
         rotate(-90deg) /* point inwards */ scale(1.4); /* same size boost */
     transform-origin: center;
+    z-index: 2;
 }
 
 .ui-wheel-of-fortune > * {
@@ -125,13 +153,19 @@ h6 {
     font-size: 5cqi;
     place-self: center;
     width: 20cqi;
+    z-index: 1;
 }
 
 .ui-wheel-of-fortune ul {
-    all: unset;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    position: absolute;
+    inset: 15px;
+
     clip-path: inset(0 0 0 0 round 50%);
     display: grid;
-    inset: 0;
     place-content: center start;
 }
 
@@ -142,7 +176,7 @@ h6 {
         calc(360deg / var(--_items) * calc(var(--_idx))),
         100%,
         75%
-    );
+    ); /* Restored rainbow background */
     clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
     display: grid;
     font-size: 5cqi;
@@ -154,7 +188,6 @@ h6 {
     width: 50cqi;
 }
 
-/* Add all idx values explicitly */
 .ui-wheel-of-fortune li:nth-of-type(1) {
     --_idx: 1;
 }

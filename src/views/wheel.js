@@ -37,15 +37,18 @@ let previousEndSector = 0;
 const wheelTemplate = (sections) => html`
     <div>
         <fieldset class="ui-wheel-of-fortune">
-            <ul style="--_items: ${sections.length}">
+            <ul id="wheel" style="--_items: ${sections.length}">
                 ${sections.map(
                     (name, index) =>
                         html` <li style="--_idx: ${index + 1}">${name}</li> `
                 )}
             </ul>
-            <button type="button" @click=${spinWheel}>SPIN</button>
+            <div class="circle"></div>
         </fieldset>
         <div style="position: fixed; top: 0; left: 0" id="output">0</div>
+        <button class="spin-trigger-button" type="button" @click="${spinWheel}">
+            SPIN
+        </button>
     </div>
 `;
 
@@ -54,8 +57,7 @@ const wheelTemplate = (sections) => html`
  * @param {Event} event
  */
 function spinWheel(event) {
-    const wheel = /** @type {HTMLElement} */ (event.target)
-        .previousElementSibling;
+    const wheel = /** @type {HTMLElement} */ document.getElementById('wheel');
 
     if (!wheel) {
         return;
@@ -66,10 +68,11 @@ function spinWheel(event) {
     }
 
     const sectorSize = 360 / 12;
-    const randomSectorOffset = (Math.random() * 12 | 0) + 60;
+    const randomSectorOffset = ((Math.random() * 12) | 0) + 60;
     const randomAdditionalDegrees = randomSectorOffset * sectorSize;
-    
-    const newEndDegree = (previousEndSector * sectorSize) - randomAdditionalDegrees;
+
+    const newEndDegree =
+        previousEndSector * sectorSize - randomAdditionalDegrees;
 
     animation = wheel.animate(
         [
