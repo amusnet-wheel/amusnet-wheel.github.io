@@ -88,10 +88,11 @@ h6 {
     container-type: inline-size;
     direction: ltr;
     display: grid;
-    position: relative;
+    position: fixed;
     height: 100vh;
-    margin: 0 auto;
-    /* left: -34%; */
+    transform: translate(47%, -50%);
+    top: 50%;
+    right: 0;
 }
 
 .ui-wheel-of-fortune::after {
