@@ -1,4 +1,10 @@
 /* 1. Use a more-intuitive box-sizing model */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+body {
+    font-family: 'Montserrat', sans-serif;
+}
+
 *,
 *::before,
 *::after {
@@ -89,14 +95,20 @@ h6 {
 }
 
 .ui-wheel-of-fortune::after {
-    aspect-ratio: 1 / cos(30deg);
+    /* …your usual shape styling… */
+    width: 4cqi; /* tweak to taste */
+    height: 4cqi;
     background-color: crimson;
     clip-path: polygon(50% 100%, 100% 0, 0 0);
     content: '';
-    height: 4cqi;
     position: absolute;
-    place-self: start center;
-    scale: 1.4;
+
+    /* === NEW POSITION RULES === */
+    top: 50%; /* halfway down */
+    left: 0; /* flush left */
+    transform: translate(-50%, -50%) /* center the tip on the edge */
+        rotate(-90deg) /* point inwards */ scale(1.4); /* same size boost */
+    transform-origin: center;
 }
 
 .ui-wheel-of-fortune > * {
