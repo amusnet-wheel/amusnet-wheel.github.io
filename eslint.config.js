@@ -9,15 +9,15 @@ export default [
             globals: {
                 ...globals.browser,
                 window: true,
-                browser: true
-            }
+                browser: true,
+            },
         },
         rules: {
             semi: 'error',
             curly: 'error',
             quotes: ['warn', 'single'],
             'no-undef': 'error',
-            indent: ['error', 4]
-        }
-    }
+            // indent: ['error', 4],
+        },
+    },
 ];
