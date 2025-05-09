@@ -132,26 +132,6 @@ h6 {
     border-right: 3px solid mediumvioletred;
 }
 
-.ui-wheel-of-fortune::after {
-    /* Pointer */
-    width: 55%;
-    height: 10vh;
-    border: 2vh solid #07162b;
-    border-left-width: 4vh;
-    border-right: none;
-    border-top-left-radius: 4vh;
-    border-bottom-left-radius: 4vh;
-    content: '';
-    position: absolute;
-    box-shadow: 0 0 0 0.5vh #b1e3dd;
-
-    top: 50%;
-    left: 0;
-    transform: translate(-10%, -50%); /* center the tip on the edge */
-    transform-origin: center;
-    z-index: 1;
-}
-
 .ui-wheel-of-fortune > * {
     position: absolute;
 }
@@ -167,6 +147,24 @@ h6 {
     width: 10vh;
     z-index: 2;
     box-shadow: 0 0 0 0.5vh #b1e3dd;
+}
+
+.ui-wheel-of-fortune .marker {
+    width: 55%;
+    height: 10vh;
+    border: 2vh solid #07162b;
+    border-left-width: 4vh;
+    border-right: none;
+    border-top-left-radius: 4vh;
+    border-bottom-left-radius: 4vh;
+    position: absolute;
+    box-shadow: 0 0 0 0.5vh #b1e3dd;
+
+    top: 50%;
+    left: 0;
+    transform: translate(-10%, -50%);
+    transform-origin: center;
+    z-index: 1;
 }
 
 .ui-wheel-of-fortune ul {

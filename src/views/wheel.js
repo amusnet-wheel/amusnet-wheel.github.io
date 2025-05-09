@@ -11,10 +11,11 @@ const wheelTemplate = (sections, spinWheel) => html`
         <fieldset class="ui-wheel-of-fortune">
             <ul id="wheel" style="--_items: ${sections.length}">
                 ${sections.map(
-                    (name, index) => html` <li style="--_idx: ${index + 1}">${name}</li> `
-                )}
+    (name, index) => html` <li style="--_idx: ${index + 1}">${name}</li> `
+)}
             </ul>
             <div class="center"></div>
+            <div class="marker"></div>
         </fieldset>
         <button class="spin-trigger-button" type="button" @click="${spinWheel}">
             SPIN
@@ -66,6 +67,22 @@ export function showWheel(ctx) {
         );
 
         previousEndDegree = newEndDegree;
+
+        setTimeout(() => {
+            const keyframes = [
+                { boxShadow: '0 0 0 0.5vh rgb(190, 197, 197), 0 -50px 0 0.5vh rgba(255, 215, 0, 0)' },
+                { boxShadow: '0 0 0 0.5vh rgba(190, 197, 197, 0), 0 0 0 0.5vh rgba(255, 215, 0, 1)', offset: 0.5 },
+                { boxShadow: '0 0 0 0.5vh rgb(190, 197, 197), 0 50px 0 0.5vh rgba(255, 215, 0, 0)' }
+            ];
+            const timing = {
+                duration: 1000,
+                iterations: Infinity,
+                easing: 'ease-in-out'
+            };
+
+            document.querySelector('.ui-wheel-of-fortune .center').animate(keyframes, timing);
+            document.querySelector('.ui-wheel-of-fortune .marker').animate(keyframes, timing);
+        }, 8000);
 
         setTimeout(() => {
             spinning = false;
