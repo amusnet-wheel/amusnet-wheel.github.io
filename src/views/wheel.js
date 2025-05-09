@@ -1,11 +1,6 @@
 import { html } from '@lit';
+import { getWheelSectors } from '../utils.js';
 
-/**
- * Main view rendering the fortune wheel.
- * Handles rendering and animation in one file.
- * /**
- * @type {import('../index').ViewController} ctx
- */
 /**
  * Template for the wheel and spin button.
  * @param {string[]} sections
@@ -15,56 +10,32 @@ const wheelTemplate = (sections, spinWheel) => html`
         <fieldset class="ui-wheel-of-fortune">
             <ul id="wheel" style="--_items: ${sections.length}">
                 ${sections.map(
-                    (name, index) =>
-                        html` <li style="--_idx: ${index + 1}">${name}</li> `
-                )}
+    (name, index) =>
+        html` <li style="--_idx: ${index + 1}">${name}</li> `
+)}
             </ul>
             <div class="circle"></div>
         </fieldset>
         <div style="position: fixed; top: 0; left: 0" id="output">0</div>
-        <button
-            id="spin-btn"
-            class="spin-trigger-button"
-            type="button"
-            @click="${spinWheel}"
-        >
+        <button class="spin-trigger-button" type="button" @click="${spinWheel}">
             SPIN
         </button>
     </div>
 `;
 
-const sections = [
-    'Shirt',
-    'Quiz',
-    'Bottle',
-    'Shirt',
-    'Quiz',
-    'Bottle',
-    'Shirt',
-    'Quiz',
-    'Bottle',
-    'Shirt',
-    'Quiz',
-    'Bottle',
-];
-
-let animation = null;
-let previousEndDegree = 0;
-let previousEndSector = 0;
-
-const prizeTemplate = (prize) => html` <div>You Win Prize ${prize}</div> `;
-
+/**
+ * Main view rendering the fortune wheel.
+ * Handles rendering and animation in one file.
+ * @type {import('../index.js').ViewController}
+ */
 export function showWheel(ctx) {
-    ctx.render(wheelTemplate(sections, spinWheel));
+    ctx.render(wheelTemplate(sectors, spinWheel));
+
     /**
      * Spins the wheel.
-     * @param {Event} event
      */
-    function spinWheel(event) {
-        const wheel =
-            /** @type {HTMLElement} */ document.getElementById('wheel');
-        const spinButton =
-            /** @type {HTMLElement} */ document.getElementById('spin-btn');
+    function spinWheel() {
+        const wheel = /** @type {HTMLElement} */ document.getElementById('wheel');
 
         if (!wheel) {
             return;
@@ -81,6 +52,11 @@ export function showWheel(ctx) {
         const newEndDegree =
             previousEndSector * sectorSize - randomAdditionalDegrees;
 
+        previousEndSector -= randomSectorOffset;
+
+        const prizeIndex = Math.abs(previousEndSector % 12);
+        const prize = sectors[prizeIndex];
+
         animation = wheel.animate(
             [
                 { transform: `rotate(${previousEndDegree}deg)` },
@@ -93,20 +69,14 @@ export function showWheel(ctx) {
             }
         );
 
-        previousEndSector -= randomSectorOffset;
+        previousEndDegree = newEndDegree;
 
-        const prizeIndex = Math.abs(previousEndSector % 12);
-
-        const prize = sections[prizeIndex];
-
-        document.getElementById('output').textContent = prize;
-
-        setTimeout(() => {
-            ctx.page.redirect('/quiz');
-        }, 11000);
-
-        setTimeout(() => {
-            ctx.overlay(prizeTemplate(prize));
-        }, 8500);
+        setTimeout(() => alert(`Congratulations! You won:\n${prize}`), 9000);
     }
 }
+
+const sectors = getWheelSectors();
+
+let animation = null;
+let previousEndDegree = 0;
+let previousEndSector = 0;
