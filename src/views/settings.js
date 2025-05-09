@@ -1,6 +1,6 @@
 import { html } from '@lit';
 
-const prizes = [ 'Quiz', 'Water Bottle', 'Shirt'];
+const prizes = [];
 let stores = {}; // storeName -> { name, sectors[] }
 let currentStore = '';
 let updateCallback = () => {};

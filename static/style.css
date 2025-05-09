@@ -23,6 +23,10 @@ body {
     /* 5. Improve text rendering */
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
+    background: linear-gradient(to right, #1A1636, #02352F);
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    min-height: 100vh;
 }
 
 /* 6. Improve media defaults */
@@ -177,4 +181,33 @@ h6 {
 }
 .ui-wheel-of-fortune li:nth-of-type(12) {
     --_idx: 12;
+}
+
+.start-app{
+    font-size: 5vh;
+    padding: 1vw 5vw;
+    margin: 34vh 40vw;
+}
+.logo {
+    background-image: url('../assets/logo.svg');
+    width: 113vh;
+    height: 17vh;
+    background-repeat: no-repeat;
+    transform: scale(0.7);
+}
+input, select, button {
+  margin: 4px;
+}
+table {
+  width: 100%;
+  margin-top: 12px;
+  border-collapse: collapse;
+}
+th, td {
+    color: #fff;
+  padding: 8px;
+  border: 1px solid #ccc;
+}
+p, h2, label {
+color: #E3D8B7;
 }
