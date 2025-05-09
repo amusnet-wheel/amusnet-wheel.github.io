@@ -14,7 +14,7 @@ const wheelTemplate = (sections, spinWheel) => html`
                     (name, index) => html` <li style="--_idx: ${index + 1}">${name}</li> `
                 )}
             </ul>
-            <div class="circle"></div>
+            <div class="center"></div>
         </fieldset>
         <button class="spin-trigger-button" type="button" @click="${spinWheel}">
             SPIN
@@ -32,14 +32,14 @@ export function showWheel(ctx) {
 
     function spinWheel() {
         const wheel = /** @type {HTMLElement} */ document.getElementById('wheel');
+        const button = /** @type {HTMLElement} */ (document.querySelector('.spin-trigger-button'));
 
-        if (!wheel) {
+        if (!wheel || spinning) {
             return;
         }
 
-        if (animation) {
-            animation.cancel();
-        }
+        spinning = true;
+        button.style.display = 'none';
 
         const sectorSize = 360 / 12;
         const randomSectorOffset = ((Math.random() * 12) | 0) + 60;
@@ -53,7 +53,7 @@ export function showWheel(ctx) {
         const prizeIndex = Math.abs(previousEndSector % 12);
         const prize = sectors[prizeIndex];
 
-        animation = wheel.animate(
+        const animation = wheel.animate(
             [
                 { transform: `rotate(${previousEndDegree}deg)` },
                 { transform: `rotate(${newEndDegree}deg)` },
@@ -68,6 +68,8 @@ export function showWheel(ctx) {
         previousEndDegree = newEndDegree;
 
         setTimeout(() => {
+            spinning = false;
+
             if (prize == 'Quiz') {
                 ctx.page.redirect('/quiz');
             } else {
@@ -79,6 +81,6 @@ export function showWheel(ctx) {
 
 const sectors = getWheelSectors();
 
-let animation = null;
+let spinning = false;
 let previousEndDegree = 0;
 let previousEndSector = 0;

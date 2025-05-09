@@ -37,7 +37,10 @@ export function showPopup(ctx, content) {
         const btn = document.createElement('button');
         btn.textContent = 'Return to Wheel';
         btn.className = 'return-button';
-        btn.onclick = () => overlay.remove();
+        btn.onclick = () => {
+            overlay.remove();
+            /** @type {HTMLElement} */ (document.querySelector('.spin-trigger-button')).style.display = 'block';
+        };
 
         overlay.appendChild(btn);
     }, 3000);

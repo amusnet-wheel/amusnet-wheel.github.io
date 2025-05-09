@@ -20,6 +20,13 @@ body {
     }
 }
 
+header {
+    height: 9vh;
+    background-color: #07162b;
+    background-image: url('/assets/logo.svg');
+    background-size: cover;
+}
+
 body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
@@ -71,30 +78,29 @@ h6 {
 
 /* Styles for the spin trigger button */
 .spin-trigger-button {
-    position: fixed;
-    left: 5vw;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 15px 30px;
-    font-size: 1.5em;
+    position: absolute;
+    left: 50%;
+    top: 80%;
+    transform: translateX(-50%);
+    padding: 1vh 4vh;
+    font-size: 4vh;
     color: white;
-    background-color: #ff4081; /* A vibrant pink, fitting the candy theme */
+    background-color: #07162b;
     border: none;
-    border-radius: 8px;
+    border-radius: 1vh;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0.5vh 0.5vh 0 0 #b1e3dd;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    z-index: 10;
 }
 
 .spin-trigger-button:hover {
-    background-color: #f50057;
-    transform: translateY(-50%) scale(1.05);
+    background-color: #10233d;
+    transform: translateX(-50%) scale(1.05);
 }
 
 .spin-trigger-button:active {
-    background-color: #c51162;
-    transform: translateY(-50%) scale(1);
+    background-color: #062550;
+    transform: translateX(-50%) scale(1);
 }
 
 #root,
@@ -112,8 +118,8 @@ h6 {
     position: fixed;
     right: 0;
     top: 50%;
-    transform: translate(50%, -50%);
-    height: 100vh;
+    transform: translate(40%, -45%);
+    height: 80vh;
 
     /* Become the frame */
     padding: 15px;
@@ -128,35 +134,39 @@ h6 {
 
 .ui-wheel-of-fortune::after {
     /* Pointer */
-    width: 4cqi;
-    height: 4cqi;
-    background-color: #ffd700;
-    clip-path: polygon(50% 100%, 100% 0, 0 0);
+    width: 55%;
+    height: 10vh;
+    border: 2vh solid #07162b;
+    border-left-width: 4vh;
+    border-right: none;
+    border-top-left-radius: 4vh;
+    border-bottom-left-radius: 4vh;
     content: '';
     position: absolute;
+    box-shadow: 0 0 0 0.5vh #b1e3dd;
 
     top: 50%;
     left: 0;
-    transform: translate(-50%, -50%) /* center the tip on the edge */
-        rotate(-90deg) /* point inwards */ scale(1.4); /* same size boost */
+    transform: translate(-10%, -50%); /* center the tip on the edge */
     transform-origin: center;
-    z-index: 2;
+    z-index: 1;
 }
 
 .ui-wheel-of-fortune > * {
     position: absolute;
 }
 
-.ui-wheel-of-fortune button {
+.ui-wheel-of-fortune .center {
     aspect-ratio: 1 / 1;
-    background: hsla(0, 0%, 100%, 0.8);
+    background: #07162b;
     border: 0;
     border-radius: 50%;
     cursor: pointer;
     font-size: 5cqi;
     place-self: center;
-    width: 20cqi;
-    z-index: 1;
+    width: 10vh;
+    z-index: 2;
+    box-shadow: 0 0 0 0.5vh #b1e3dd;
 }
 
 .ui-wheel-of-fortune ul {
