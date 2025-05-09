@@ -8,9 +8,9 @@ import { showWheel } from './views/wheel.js';
 import { showStores } from './views/settings.js';
 import { showQuiz } from './views/quiz.js';
 
-const root = document.body;
-
-page(addRender(root, render));
+const root = document.querySelector('main');
+const overlay = document.getElementById('overlay');
+page(addRender(root, overlay, render));
 page('/', showIntro);
 // page('/index.html', showIntro);
 page('/wheel', showWheel);

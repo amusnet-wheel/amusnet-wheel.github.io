@@ -1,13 +1,14 @@
-import { TemplateResult } from '@lit'
+import { TemplateResult } from '@lit';
 
 declare type Settings = {
-    version: string
-    wheelSectors: string[],
-    prizes: {[prizeName: string]: number}
-}
+    version: string;
+    wheelSectors: string[];
+    prizes: { [prizeName: string]: number };
+};
 
 declare type AppContext = {
-    render(view: TemplateResult): void
-}
+    render(view: TemplateResult): void;
+    overlay(view: TemplateResult): void;
+};
 
-declare type ViewController = (ctx: AppContext) => void
+declare type ViewController = (ctx: AppContext) => void;
