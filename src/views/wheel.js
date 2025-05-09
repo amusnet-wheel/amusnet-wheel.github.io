@@ -1,6 +1,9 @@
 import { html } from '@lit';
-import { getWheelSectors } from '../utils.js';
+import { getPrizes, getWheelSectors, setPrizes } from '../utils.js';
 import { showPopup } from './popup.js';
+
+const SPIN_TIME = 8000;
+const PAUSE_AFTER_SPIN = 1000;
 
 /**
  * Template for the wheel and spin button.
@@ -29,6 +32,9 @@ const wheelTemplate = (sections, spinWheel) => html`
  * @type {import('../index.js').ViewController}
  */
 export function showWheel(ctx) {
+    const sectors = getWheelSectors();
+    const prizes = getPrizes();
+
     ctx.render(wheelTemplate(sectors, spinWheel));
 
     function spinWheel() {
@@ -43,7 +49,21 @@ export function showWheel(ctx) {
         button.style.display = 'none';
 
         const sectorSize = 360 / 12;
-        const randomSectorOffset = ((Math.random() * 12) | 0) + 60;
+        let randomSectorOffset = ((Math.random() * 12) | 0) + 60;
+
+        let newSector = previousEndSector - randomSectorOffset;
+        let prizeIndex = Math.abs(newSector % 12);
+        let prize = sectors[prizeIndex];
+        let qty = Number(prizes[prize]);
+
+        while (prize != 'Quiz' && !qty) {
+            randomSectorOffset++;
+            newSector--;
+            prizeIndex = Math.abs(newSector % 12);
+            prize = sectors[prizeIndex];
+            qty = Number(prizes[prize]);
+        }
+
         const randomAdditionalDegrees = randomSectorOffset * sectorSize;
 
         const newEndDegree =
@@ -51,16 +71,13 @@ export function showWheel(ctx) {
 
         previousEndSector -= randomSectorOffset;
 
-        const prizeIndex = Math.abs(previousEndSector % 12);
-        const prize = sectors[prizeIndex];
-
         const animation = wheel.animate(
             [
                 { transform: `rotate(${previousEndDegree}deg)` },
                 { transform: `rotate(${newEndDegree}deg)` },
             ],
             {
-                duration: 8000,
+                duration: SPIN_TIME,
                 easing: 'cubic-bezier(0.440, -0.205, 0.000, 1.130)',
                 fill: 'forwards',
             }
@@ -75,14 +92,14 @@ export function showWheel(ctx) {
                 { boxShadow: '0 0 0 0.5vh rgb(190, 197, 197), 0 50px 0 0.5vh rgba(255, 215, 0, 0)' }
             ];
             const timing = {
-                duration: 1000,
-                iterations: Infinity,
+                duration: PAUSE_AFTER_SPIN,
+                iterations: 1,
                 easing: 'ease-in-out'
             };
 
             document.querySelector('.ui-wheel-of-fortune .center').animate(keyframes, timing);
             document.querySelector('.ui-wheel-of-fortune .marker').animate(keyframes, timing);
-        }, 8000);
+        }, SPIN_TIME);
 
         setTimeout(() => {
             spinning = false;
@@ -91,12 +108,13 @@ export function showWheel(ctx) {
                 ctx.page.redirect('/quiz');
             } else {
                 showPopup(ctx, prize);
+                prizes[prize]--;
+                setPrizes(prizes);
             }
-        }, 9000);
+        }, SPIN_TIME + PAUSE_AFTER_SPIN);
     }
 }
 
-const sectors = getWheelSectors();
 
 let spinning = false;
 let previousEndDegree = 0;
