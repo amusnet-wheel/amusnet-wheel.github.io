@@ -5,16 +5,16 @@ import { addRender } from './mw/render.js';
 
 import { showIntro } from './views/intro.js';
 import { showWheel } from './views/wheel.js';
-import { showStores } from './views/settings.js';
+import { showSettings } from './views/settings.js';
 import { showQuiz } from './views/quiz.js';
 
 const root = document.querySelector('main');
-const overlay = document.getElementById('overlay');
-page(addRender(root, overlay, render));
+page(addRender(root, render));
+
 page('/', showIntro);
-// page('/index.html', showIntro);
+page('/index.html', showIntro);
 page('/wheel', showWheel);
-page('/settings', showStores);
+page('/settings', showSettings);
 
 const navEntries = performance.getEntriesByType('navigation');
 const navEntry = /** @type {PerformanceNavigationTiming} */ (navEntries[0]);

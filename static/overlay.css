@@ -1,0 +1,108 @@
+#overlay {
+    position: fixed;
+    backdrop-filter: blur(0.5vh);
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    animation: fadeIn 0.4s linear;
+}
+
+@keyframes zoomInBounce {
+    0% {
+        transform: scale(0);
+    }
+
+    60% {
+        transform: scale(1.1);
+    }
+
+    80% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes zoomIn {
+    0% {
+        transform: scale(0);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        backdrop-filter: blur(0);
+    }
+
+    100% {
+        backdrop-filter: blur(0.5vh);
+    }
+}
+
+.popup-splash {
+    width: 66%;
+    height: 33%;
+
+    background-color: #07162b;
+    border-radius: 1vh;
+
+    box-shadow: 0.5vh 0.5vh 0 0 #b1e3dd;
+
+    color: white;
+    font-size: 4vh;
+
+    display: flex;
+    flex-direction: column;
+
+    animation: zoomInBounce 0.8s ease-in-out;
+}
+
+.title-row,
+.prize-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.title-row {
+    line-height: 6vh;
+    height: 6vh;
+    flex-shrink: 0;
+}
+
+.prize-row {
+    flex-grow: 1;
+    font-weight: 600;
+}
+
+.prize-name {
+    animation: zoomIn 0.2s linear;
+}
+
+.return-button {
+    position: fixed;
+    top: 70%;
+    border: none;
+    background-color: #07162b;
+    color: white;
+    font-size: 2vh;
+    padding: 1vh 2vh;
+    border-radius: 1vh;
+    box-shadow: 0.5vh 0.5vh 0 0 #b1e3dd;
+}
+
+.return-button:hover {
+    background-color: #b1e3dd;
+}

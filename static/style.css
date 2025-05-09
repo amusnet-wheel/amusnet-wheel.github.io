@@ -24,7 +24,8 @@ body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
-    background: linear-gradient(to right, #1A1636, #02352F);
+    /* background: linear-gradient(to right, #1A1636, #02352F); */
+    background-image: url('/assets/Employer_Branding_Page.png');
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     min-height: 100vh;

@@ -1,5 +1,6 @@
 import { html } from '@lit';
 import { getWheelSectors } from '../utils.js';
+import { showPopup } from './popup.js';
 
 /**
  * Template for the wheel and spin button.
@@ -10,13 +11,11 @@ const wheelTemplate = (sections, spinWheel) => html`
         <fieldset class="ui-wheel-of-fortune">
             <ul id="wheel" style="--_items: ${sections.length}">
                 ${sections.map(
-    (name, index) =>
-        html` <li style="--_idx: ${index + 1}">${name}</li> `
-)}
+                    (name, index) => html` <li style="--_idx: ${index + 1}">${name}</li> `
+                )}
             </ul>
             <div class="circle"></div>
         </fieldset>
-        <div style="position: fixed; top: 0; left: 0" id="output">0</div>
         <button class="spin-trigger-button" type="button" @click="${spinWheel}">
             SPIN
         </button>
@@ -31,9 +30,6 @@ const wheelTemplate = (sections, spinWheel) => html`
 export function showWheel(ctx) {
     ctx.render(wheelTemplate(sectors, spinWheel));
 
-    /**
-     * Spins the wheel.
-     */
     function spinWheel() {
         const wheel = /** @type {HTMLElement} */ document.getElementById('wheel');
 
@@ -71,7 +67,13 @@ export function showWheel(ctx) {
 
         previousEndDegree = newEndDegree;
 
-        setTimeout(() => alert(`Congratulations! You won:\n${prize}`), 9000);
+        setTimeout(() => {
+            if (prize == 'Quiz') {
+                ctx.page.redirect('/quiz');
+            } else {
+                showPopup(ctx, prize);
+            }
+        }, 9000);
     }
 }
 

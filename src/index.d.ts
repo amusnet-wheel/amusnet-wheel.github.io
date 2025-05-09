@@ -1,4 +1,5 @@
 import { TemplateResult } from '@lit';
+import page from '@page';
 
 declare type Settings = {
     version: string;
@@ -7,8 +8,9 @@ declare type Settings = {
 };
 
 declare type AppContext = {
-    render(view: TemplateResult): void;
-    overlay(view: TemplateResult): void;
+    render(view: TemplateResult): void,
+    overlay(view: TemplateResult): void,
+    page: typeof page,
 };
 
 declare type ViewController = (ctx: AppContext) => void;
