@@ -1,20 +1,92 @@
-import { html } from '@lit';
+import { html, mathml } from '@lit';
 
-const wheelView = (sections) => html`
-<h1>Wheel Page</h1>
-<section>
-    ${sections.map(wheelSection)}
-</section>`;
+/**
+ * Main view rendering the fortune wheel.
+ * Handles rendering and animation in one file.
+ * /**
+ * @param {{ render: (content: unknown) => void }} ctx
+ */
 
-const wheelSection = (name) => html`
-<div>${name}</div>`;
-
-/** @type {import('../index').ViewController} */
 export function showWheel(ctx) {
-    const sections = [
-        'Quiz',
-        'Water Bottle',
-        'Shirt'
-    ];
-    ctx.render(wheelView(sections));
+    ctx.render(wheelTemplate(sections));
+}
+
+const sections = [
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+];
+
+let animation = null;
+let previousEndDegree = 0;
+let previousEndSector = 0;
+
+/**
+ * Template for the wheel and spin button.
+ * @param {string[]} sections
+ */
+const wheelTemplate = (sections) => html`
+    <div>
+        <fieldset class="ui-wheel-of-fortune">
+            <ul style="--_items: ${sections.length}">
+                ${sections.map(
+                    (name, index) =>
+                        html` <li style="--_idx: ${index + 1}">${name}</li> `
+                )}
+            </ul>
+            <button type="button" @click=${spinWheel}>SPIN</button>
+        </fieldset>
+        <div style="position: fixed; top: 0; left: 0" id="output">0</div>
+    </div>
+`;
+
+/**
+ * Spins the wheel.
+ * @param {Event} event
+ */
+function spinWheel(event) {
+    const wheel = /** @type {HTMLElement} */ (event.target)
+        .previousElementSibling;
+
+    if (!wheel) {
+        return;
+    }
+
+    if (animation) {
+        animation.cancel();
+    }
+
+    const sectorSize = 360 / 12;
+    const randomSectorOffset = (Math.random() * 12 | 0) + 60;
+    const randomAdditionalDegrees = randomSectorOffset * sectorSize;
+    
+    const newEndDegree = (previousEndSector * sectorSize) - randomAdditionalDegrees;
+
+    animation = wheel.animate(
+        [
+            { transform: `rotate(${previousEndDegree}deg)` },
+            { transform: `rotate(${newEndDegree}deg)` },
+        ],
+        {
+            duration: 10000,
+            easing: 'cubic-bezier(0.440, -0.205, 0.000, 1.130)',
+            fill: 'forwards',
+        }
+    );
+
+    previousEndSector -= randomSectorOffset;
+
+    const prizeIndex = Math.abs(previousEndSector % 12);
+    const prize = sections[prizeIndex];
+
+    document.getElementById('output').textContent = prize;
 }
