@@ -2,7 +2,6 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    background-color: lightcyan; /* Added for candy theme */
 }
 
 *,
@@ -25,7 +24,6 @@ body {
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     overflow: hidden;
-    background-color: lightcyan; /* Added for candy theme - ensuring it's applied if there are multiple body rules */
 }
 
 img,

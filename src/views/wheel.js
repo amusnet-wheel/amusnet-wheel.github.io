@@ -80,7 +80,7 @@ function spinWheel(event) {
             { transform: `rotate(${newEndDegree}deg)` },
         ],
         {
-            duration: 10000,
+            duration: 8000,
             easing: 'cubic-bezier(0.440, -0.205, 0.000, 1.130)',
             fill: 'forwards',
         }
