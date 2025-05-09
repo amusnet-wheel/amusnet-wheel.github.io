@@ -6,6 +6,7 @@ import { addRender } from './mw/render.js';
 import { showIntro } from './views/intro.js';
 import { showWheel } from './views/wheel.js';
 import { showStores } from './views/settings.js';
+import { showQuiz } from './views/quiz.js';
 
 const root = document.body;
 
@@ -27,5 +28,6 @@ if (navEntry && navEntry.type === 'reload' && hasHandledRefresh === 'false') {
     page.redirect('/'); 
 }
 
+page('/quiz', showQuiz);
 
 page.start();
