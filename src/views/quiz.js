@@ -50,7 +50,7 @@ export function showQuiz(ctx) {
         // …other questions…
     ];
 
-    let currentQuestionIndex = 0;
+    let currentQuestionIndex = Math.floor(Math.random() * questions.length);
     let answered = false;
     let correctAnswer = false; // Variable to track whether the answer was correct
 
