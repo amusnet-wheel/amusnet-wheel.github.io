@@ -1,0 +1,32 @@
+body{
+    background: linear-gradient(to right, #1a1636, #02352f);
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    overflow: hidden;
+}
+.start-app{
+    font-size: 5vh;
+    padding: 1vw 5vw;
+    margin: 34vh 40vw;
+}
+.logo {
+    background-image: url('../assets/logo.svg');
+    width: 113vh;
+    height: 17vh;
+    background-repeat: no-repeat;
+    transform: scale(0.7);
+}
+
+input, select, button {
+  margin: 4px;
+}
+table {
+  width: 100%;
+  margin-top: 12px;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 8px;
+  border: 1px solid #ccc;
+}
