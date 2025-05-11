@@ -68,6 +68,15 @@
     animation: zoomInBounce 0.8s ease-in-out;
 }
 
+.popup-splash.no-prize {
+    height:  20%;
+}
+
+
+.popup-splash.no-prize {
+    height:  20%;
+}
+
 .title-row,
 .prize-row {
     display: flex;

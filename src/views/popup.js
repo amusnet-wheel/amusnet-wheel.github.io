@@ -14,22 +14,36 @@ const popupTemplate = () => html`
     </div>
 `;
 
-export function showPopup(ctx, content) {
-    ctx.overlay(popupTemplate());
+const incorrectTemplate = () => html`
+    <div class="popup-splash no-prize">
+        <div class="prize-row">
+            Better luck<br>next time!
+        </div>
+    </div>
+`;
 
-    setTimeout(() => {
-        const effect = createWinEffect();
-        
-        const prize = document.createElement('span');
-        prize.className = 'prize-name';
-        prize.textContent = content;
+export function showPopup(ctx, content, useRedirect = false, correct = true) {
+    if (correct) {
+        ctx.overlay(popupTemplate());
+    } else {
+        ctx.overlay(incorrectTemplate());
+    }
 
-        const row = document.querySelector('.prize-row');
-        row.appendChild(effect);
-        row.appendChild(prize);
+    if (correct) {
+        setTimeout(() => {
+            const effect = createWinEffect();
 
-        effect['pop']();
-    }, 800);
+            const prize = document.createElement('span');
+            prize.className = 'prize-name';
+            prize.textContent = content;
+
+            const row = document.querySelector('.prize-row');
+            row.appendChild(effect);
+            row.appendChild(prize);
+
+            effect['pop']();
+        }, 800);
+    }
 
     setTimeout(() => {
         const overlay = document.getElementById('overlay');
@@ -39,7 +53,11 @@ export function showPopup(ctx, content) {
         btn.className = 'return-button';
         btn.onclick = () => {
             overlay.remove();
-            /** @type {HTMLElement} */ (document.querySelector('.spin-trigger-button')).style.display = 'block';
+            if (useRedirect) {
+                ctx.page.redirect('/wheel');
+            } else {
+                /** @type {HTMLElement} */ (document.querySelector('.spin-trigger-button')).style.display = 'block';
+            }
         };
 
         overlay.appendChild(btn);

@@ -32,6 +32,10 @@ const wheelTemplate = (sections, spinWheel) => html`
  * @type {import('../index.js').ViewController}
  */
 export function showWheel(ctx) {
+    let spinning = false;
+    let previousEndDegree = 0;
+    let previousEndSector = 0;
+
     const sectors = getWheelSectors();
     const prizes = getPrizes();
 
@@ -114,8 +118,3 @@ export function showWheel(ctx) {
         }, SPIN_TIME + PAUSE_AFTER_SPIN);
     }
 }
-
-
-let spinning = false;
-let previousEndDegree = 0;
-let previousEndSector = 0;
