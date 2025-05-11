@@ -240,9 +240,9 @@ h6 {
 }
 
 .start-app{
-    font-size: 5vh;
-    padding: 1vw 5vw;
-    margin: 34vh 40vw;
+    display: block;
+    font-size: 2vh;
+    margin: auto 10vh;
 }
 .logo {
     background-image: url('../assets/logo.svg');
