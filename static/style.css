@@ -2,6 +2,7 @@
 @import url('./quiz.css');
 @import url('./effects.css');
 @import url('./overlay.css');
+@import url('./settings.css');
 
 body {
     font-family: 'Montserrat', sans-serif;

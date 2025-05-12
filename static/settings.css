@@ -1,0 +1,13 @@
+#settings {
+    overflow-y: auto;
+    height: 100vh;
+    padding-bottom: 16vh;
+}
+
+#settings [type="number"] {
+    width: 10vh;
+}
+
+.pending {
+    background-color: bisque;
+}

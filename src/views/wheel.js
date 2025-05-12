@@ -38,6 +38,7 @@ export function showWheel(ctx) {
 
     const sectors = getWheelSectors();
     const prizes = getPrizes();
+    const numSectors = sectors.length;
 
     ctx.render(wheelTemplate(sectors, spinWheel));
 
@@ -52,18 +53,18 @@ export function showWheel(ctx) {
         spinning = true;
         button.style.display = 'none';
 
-        const sectorSize = 360 / 12;
-        let randomSectorOffset = ((Math.random() * 12) | 0) + 60;
+        const sectorSize = 360 / numSectors;
+        let randomSectorOffset = ((Math.random() * numSectors) | 0) + 60;
 
         let newSector = previousEndSector - randomSectorOffset;
-        let prizeIndex = Math.abs(newSector % 12);
+        let prizeIndex = Math.abs(newSector % numSectors);
         let prize = sectors[prizeIndex];
         let qty = Number(prizes[prize]);
 
         while (prize != 'Quiz' && !qty) {
             randomSectorOffset++;
             newSector--;
-            prizeIndex = Math.abs(newSector % 12);
+            prizeIndex = Math.abs(newSector % numSectors);
             prize = sectors[prizeIndex];
             qty = Number(prizes[prize]);
         }
