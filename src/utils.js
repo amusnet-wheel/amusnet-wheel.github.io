@@ -1,4 +1,4 @@
-const storageVersion = '1.0';
+const storageVersion = '1.1';
 const storeName = 'amusnet-prize-wheel';
 
 /**
@@ -42,8 +42,14 @@ function getStore() {
         store = JSON.parse(localStorage.getItem(storeName));
 
         if (store.version != storageVersion) {
-            // TODO if the store format changes, add migration functions
-            store = resetStore();
+            if (store.version == '1.0') {
+                Object.keys(store.prizes).forEach(k => store.prizes[k] = Number(store.prizes[k]));
+                store.version = storageVersion;
+                localStorage.setItem(storeName, JSON.stringify(store));
+            } else {
+                // TODO if the store format changes, add more migration functions
+                store = resetStore();
+            }
         }
     } catch (err) {
         console.error(err);
@@ -73,6 +79,7 @@ function setStore(data) {
  */
 function resetStore() {
     localStorage.removeItem(storeName);
+    localStorage.setItem(storeName, JSON.stringify(defaultStore));
 
     return JSON.parse(JSON.stringify(defaultStore));
 }
