@@ -2,6 +2,7 @@
 import { html } from '@lit';
 import { getPrizes, setPrizes } from '../utils.js';
 import { showPopup } from './popup.js';
+import { questions } from '../questions.js';
 
 /**
  * Main template for questions & score.
@@ -25,7 +26,7 @@ const quizTemplate = (data, onSelect) => html`
 </section>
 `;
 
-/** @type {ViewController} */
+/** @type {import('../index.js').ViewController} */
 export function showQuiz(ctx) {
     const questionIndex = Math.floor(Math.random() * questions.length);
     const question = questions[questionIndex];
@@ -57,50 +58,3 @@ export function showQuiz(ctx) {
         }, 1000);
     }
 }
-
-/**
- * @typedef {import('../index').ViewController} ViewController
- * @typedef {{ text: string; correct: boolean }} Answer
- * @typedef {{ question: string; answers: Answer[] }} Question
- */
-
-/** @type {Question[]} */
-const questions = [
-    {
-        question: 'Which is the largest animal in the world?',
-        answers: [
-            { text: 'Shark', correct: false },
-            { text: 'Blue whale', correct: true },
-            { text: 'Elephant', correct: false },
-            { text: 'Giraffe', correct: false },
-        ],
-    },
-    {
-        question: 'Which is the largest desert in the world?',
-        answers: [
-            { text: 'Kalahari', correct: false },
-            { text: 'Gobi', correct: false },
-            { text: 'Sahara', correct: false },
-            { text: 'Antarctica', correct: true },
-        ],
-    },
-    {
-        question: 'Which is the smallest continent in the world?',
-        answers: [
-            { text: 'Asia', correct: false },
-            { text: 'Australia', correct: true },
-            { text: 'Arctic', correct: false },
-            { text: 'Africa', correct: false },
-        ]
-    },
-    {
-        question: 'Which is the smallest country in the world?',
-        answers: [
-            { text: 'Vatican City', correct: true },
-            { text: 'Bhutan', correct: false },
-            { text: 'Nepal', correct: false },
-            { text: 'Shri Lanka', correct: false },
-        ]
-    }
-    // …other questions…
-];
