@@ -3,9 +3,9 @@ import page from '@page';
 
 const goToMainPage = () => {
     if (!document.fullscreenElement) {
-        if (typeof document.documentElement.webkitRequestFullscreen == 'function') {
+        if (typeof document.documentElement['webkitRequestFullscreen'] == 'function') {
             // safari
-            document.documentElement.webkitRequestFullscreen();
+            document.documentElement['webkitRequestFullscreen']();
         } else {
             document.documentElement.requestFullscreen();
         }
