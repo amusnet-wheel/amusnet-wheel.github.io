@@ -56,7 +56,9 @@ export function showPopup(ctx, content, useRedirect = false, correct = true) {
             if (useRedirect) {
                 ctx.page.redirect('/wheel');
             } else {
-                /** @type {HTMLElement} */ (document.querySelector('.spin-trigger-button')).style.display = 'block';
+                const button = /** @type {HTMLButtonElement} */ (document.querySelector('.spin-trigger-button'));
+                button.disabled = false;
+                button.style.display = 'block';
             }
         };
 
