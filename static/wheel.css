@@ -1,0 +1,72 @@
+.wheel-color-1 {
+    background-color: #a569bf;
+}
+
+.wheel-color-2 {
+    background-color: #51f0a5;
+}
+
+.wheel-color-3 {
+    background-color: #ffa666;
+}
+
+.wheel-color-4 {
+    background-color: #ffe14d;
+}
+
+.wheel-color-5 {
+    background-color: #91e689;
+}
+
+.wheel-color-6 {
+    background-color: #5ccae6;
+}
+
+.wheel-color-7 {
+    background-color: #cf3086;
+}
+
+.wheel-color-8 {
+    background-color: #6686d9;
+}
+
+/* Styles for the spin trigger button */
+.spin-trigger-button {
+    position: absolute;
+    left: 50%;
+    top: 80%;
+    transform: translateX(-50%);
+    padding: 1vh 4vh;
+    font-size: 4vh;
+    color: white;
+    background-color: #07162b;
+    border: none;
+    border-radius: 1vh;
+    cursor: pointer;
+    box-shadow: 0.5vh 0.5vh 0 0 #b1e3dd;
+    transition: all 0.2s ease-in-out;
+}
+
+.spin-trigger-button:hover {
+    background-color: #10233d;
+    transform: translateX(-50%) scale(1.05);
+}
+
+.spin-trigger-button:disabled {
+    background-color: #4f80c5;
+    animation: buttonPress 0.2s ease-in-out;
+}
+
+@keyframes buttonPress {
+    0% {
+        transform: translateX(-50%) scale(1);
+    }
+
+    50% {
+        transform: translateX(-50%) scale(0.95);
+    }
+
+    100% {
+        transform: translateX(-50%) scale(1);
+    }
+}

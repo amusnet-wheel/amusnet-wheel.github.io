@@ -3,6 +3,7 @@
 @import url('./effects.css');
 @import url('./overlay.css');
 @import url('./settings.css');
+@import url('./wheel.css');
 
 body {
     font-family: 'Montserrat', sans-serif;
@@ -78,33 +79,6 @@ h4,
 h5,
 h6 {
     text-wrap: balance;
-}
-
-/* Styles for the spin trigger button */
-.spin-trigger-button {
-    position: absolute;
-    left: 50%;
-    top: 80%;
-    transform: translateX(-50%);
-    padding: 1vh 4vh;
-    font-size: 4vh;
-    color: white;
-    background-color: #07162b;
-    border: none;
-    border-radius: 1vh;
-    cursor: pointer;
-    box-shadow: 0.5vh 0.5vh 0 0 #b1e3dd;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.spin-trigger-button:hover {
-    background-color: #10233d;
-    transform: translateX(-50%) scale(1.05);
-}
-
-.spin-trigger-button:active {
-    background-color: #062550;
-    transform: translateX(-50%) scale(1);
 }
 
 #root,
@@ -187,11 +161,13 @@ h6 {
 .ui-wheel-of-fortune li {
     align-content: center;
     aspect-ratio: 1 / calc(2 * tan(180deg / var(--_items)));
+    /*
     background: hsl(
         calc(360deg / var(--_items) * calc(var(--_idx))),
         100%,
         75%
-    ); /* Restored rainbow background */
+    );
+    */
     clip-path: polygon(0% 0%, 100% 50%, 0% 100%);
     display: grid;
     font-size: 5cqi;

@@ -9,12 +9,12 @@ const PAUSE_AFTER_SPIN = 1000;
  * Template for the wheel and spin button.
  * @param {string[]} sections
  */
-const wheelTemplate = (sections, spinWheel) => html`
+const wheelTemplate = (sections, colorRange, spinWheel) => html`
     <div>
         <fieldset class="ui-wheel-of-fortune">
             <ul id="wheel" style="--_items: ${sections.length}">
                 ${sections.map(
-    (name, index) => html` <li style="--_idx: ${index + 1}">${name}</li> `
+    (name, index) => html` <li class="${'wheel-color-' + ((index + 1) % colorRange)}" style="--_idx: ${index + 1}">${name}</li> `
 )}
             </ul>
             <div class="center"></div>
@@ -39,19 +39,21 @@ export function showWheel(ctx) {
     const sectors = getWheelSectors();
     const prizes = getPrizes();
     const numSectors = sectors.length;
+    const colorRange = numSectors > 8 ? numSectors / 2 : numSectors;
 
-    ctx.render(wheelTemplate(sectors, spinWheel));
+    ctx.render(wheelTemplate(sectors, colorRange, spinWheel));
 
     function spinWheel() {
-        const wheel = /** @type {HTMLElement} */ document.getElementById('wheel');
-        const button = /** @type {HTMLElement} */ (document.querySelector('.spin-trigger-button'));
+        const wheel = /** @type {HTMLElement} */ (document.getElementById('wheel'));
+        const button = /** @type {HTMLButtonElement} */ (document.querySelector('.spin-trigger-button'));
 
         if (!wheel || spinning) {
             return;
         }
 
         spinning = true;
-        button.style.display = 'none';
+        button.disabled = true;
+        setTimeout(() => button.style.display = 'none', 200);
 
         const sectorSize = 360 / numSectors;
         let randomSectorOffset = ((Math.random() * numSectors) | 0) + 60;

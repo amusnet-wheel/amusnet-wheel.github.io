@@ -44,11 +44,6 @@
     transition: all 0.3s;
 }
 
-.btn:hover:not([disabled]) {
-    background: #222;
-    color: #fff;
-}
-
 #nextBtn {
     background: #001e4d;
     color: #fff;
@@ -64,10 +59,12 @@
 
 .correct {
     background: linear-gradient(45deg, #fff 0%, #fff 33%, #9aeabc 66%, #9aeabc 100%);
+    animation: answerSelect 0.2s ease-in-out, waveSweep 1s forwards;
 }
 
 .incorrect {
     background: linear-gradient(45deg, #fff 0%, #fff 33%, #ff9393 66%, #ff9393 100%);
+    animation: waveSweep 1s forwards, shake 0.3s ease-in-out;
 }
 
 @keyframes waveSweep {
@@ -80,7 +77,44 @@
     }
 }
 
-.correct, .incorrect {
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-1vh);
+    }
+
+    50% {
+        transform: translateX(1vh);
+    }
+
+    75% {
+        transform: translateX(-1vh);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+
+@keyframes answerSelect {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(0.95);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.correct,
+.incorrect {
     background-size: 300% 100%;
-    animation: waveSweep 1s forwards;
 }
