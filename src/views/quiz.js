@@ -42,19 +42,24 @@ export function showQuiz(ctx) {
         const { correct } = question.answers[answerIndex];
         const className = correct ? 'correct' : 'incorrect';
 
-        event.target.parentElement.classList.add(className);
+        let btn = event.target;
+        if (event.target.tagName != 'BUTTON') {
+            btn = event.target.parentElement;
+        }
 
-        const prizes = getPrizes();
-        const stockedPrizes = Object.entries(prizes).filter(([p, qty]) => Number(qty) > 0);
-        const prize = stockedPrizes[Math.floor(Math.random() * stockedPrizes.length)][0];
+        btn.classList.add(className);
+
+        // const prizes = getPrizes();
+        // const stockedPrizes = Object.entries(prizes).filter(([p, qty]) => Number(qty) > 0);
+        // const prize = stockedPrizes[Math.floor(Math.random() * stockedPrizes.length)][0];
 
         setTimeout(() => {
-            showPopup(ctx, prize, true, correct);
+            showPopup(ctx, 'Pick the one you like', true, correct);
 
-            if (correct) {
-                prizes[prize]--;
-                setPrizes(prizes);
-            }
+            // if (correct) {
+            //     prizes[prize]--;
+            //     setPrizes(prizes);
+            // }
         }, 1000);
     }
 }
