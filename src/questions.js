@@ -328,7 +328,7 @@ export const questions = [
                 'correct': false
             },
             {
-                'text': '0',
+                'text': 'false',
                 'correct': true
             },
             {
