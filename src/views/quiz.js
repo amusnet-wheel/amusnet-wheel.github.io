@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { html } from '@lit';
-import { getPrizes, setPrizes } from '../utils.js';
+import { getQuizPrizes, setQuizPrizes } from '../utils.js';
 import { showPopup } from './popup.js';
 import { questions } from '../questions.js';
 
@@ -49,17 +49,19 @@ export function showQuiz(ctx) {
 
         btn.classList.add(className);
 
-        // const prizes = getPrizes();
-        // const stockedPrizes = Object.entries(prizes).filter(([p, qty]) => Number(qty) > 0);
-        // const prize = stockedPrizes[Math.floor(Math.random() * stockedPrizes.length)][0];
+        const prizes = getQuizPrizes();
+        const stockedPrizes = Object.entries(prizes).filter(([p, qty]) => Number(qty) > 0);
+        const prize = stockedPrizes[Math.floor(Math.random() * stockedPrizes.length)][0];
 
         setTimeout(() => {
-            showPopup(ctx, 'Pick the one you like', true, correct);
+            // showPopup(ctx, 'Pick the one you like', true, correct);
+            showPopup(ctx, prize, true, correct);
+            
 
-            // if (correct) {
-            //     prizes[prize]--;
-            //     setPrizes(prizes);
-            // }
+            if (correct) {
+                 prizes[prize]--;
+                 setQuizPrizes(prizes);
+            }
         }, 1000);
     }
 }

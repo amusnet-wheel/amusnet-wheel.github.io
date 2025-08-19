@@ -5,6 +5,7 @@ declare type Settings = {
     version: string;
     wheelSectors: string[];
     prizes: { [prizeName: string]: number };
+    quizPrizes: { [prizeName: string]: number };
 };
 
 declare type AppContext = {

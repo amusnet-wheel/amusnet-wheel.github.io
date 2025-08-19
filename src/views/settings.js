@@ -1,5 +1,5 @@
 import { html } from '@lit';
-import { getPrizes, getWheelSectors, setPrizes, setWheelSectors } from '../utils.js';
+import { getPrizes, getQuizPrizes, getWheelSectors, setPrizes, setQuizPrizes, setWheelSectors } from '../utils.js';
 
 const prizeEditor = (prizes, onSave, onDelete, onAdd, onChange) => html`
 <section id="prize-editor">
@@ -31,11 +31,13 @@ const sectorRow = (index, name, sectors, onChange, onDelete) => html`
     <button @click=${() => onDelete(index)}>Delete Sector</button>
 </div>`;
 
-const settingsView = (prizeOptions, sectorOptions) => html`
+const settingsView = (prizeOptions, quizPrizeOptions, sectorOptions) => html`
 <div id="settings">
     <h1>Settigns</h1>
-    <h2>Prize Inventory</h2>
+    <h2>Wheel prize Inventory</h2>
     ${prizeEditor(...prizeOptions)}
+    <h2>Quiz prize Inventory</h2>
+    ${prizeEditor(...quizPrizeOptions)}
     <h2>Wheel Sectors</h2>
     ${sectorEditor(...sectorOptions)}
 </div>
@@ -43,74 +45,12 @@ const settingsView = (prizeOptions, sectorOptions) => html`
 
 /** @type {import('../index').ViewController} */
 export function showSettings(ctx) {
-    // const update = () => ctx.render(renderApp(update));
-    // update();
-
     let sectors = getWheelSectors();
-    let prizes = getPrizes();
-
-    update();
-
-    function onSave(originalName, event) {
-        const parent = event.target.parentElement;
-        const nameInput = parent.querySelector('[name="name"]');
-        const qtyInput = parent.querySelector('[name="qty"]');
-        const name = nameInput.value;
-        const qty = qtyInput.value;
-
-        /** @type {import('../index').Settings["prizes"]} */
-        let newPrizes = {};
-
-        for (let [prizeName, prizeQty] of Object.entries(prizes)) {
-            if (prizeName == originalName) {
-                newPrizes[name] = Number(qty);
-            } else {
-                newPrizes[prizeName] = prizeQty;
-            }
-        }
-
-        prizes = newPrizes;
-
-        setPrizes(prizes);
-
-        nameInput.classList.remove('pending');
-        qtyInput.classList.remove('pending');
-
-        update();
-    }
-
-    function onPendingChange(event) {
-        event.target.classList.add('pending');
-    }
-
-    function onDelete(originalName) {
-        /** @type {import('../index').Settings["prizes"]} */
-        let newPrizes = {};
-
-        for (let [prizeName, prizeQty] of Object.entries(prizes)) {
-            if (prizeName == originalName) {
-                continue;
-            } else {
-                newPrizes[prizeName] = prizeQty;
-            }
-        }
-
-        prizes = newPrizes;
-
-        setPrizes(prizes);
-
-        update();
-    }
-
-    function onAdd() {
-        prizes['PrizeName'] = 0;
-        setPrizes(prizes);
-
-        update();
-    }
+    const [getQuizPrizesFn, quizHandlers] = definePrizeHandlers(getQuizPrizes, setQuizPrizes, update);
+    const [getWheelPrizes, wheelHandlers] = definePrizeHandlers(getPrizes, setPrizes, update);
 
     function addSector() {
-        sectors.push('Quiz');
+        sectors.push('Quiz')
         setWheelSectors(sectors);
 
         update();
@@ -131,8 +71,69 @@ export function showSettings(ctx) {
     }
 
     function update() {
-        // ctx.render(prizeEditor(prizes, onSave, onDelete, onAdd));
-        const prizeNames = ['Quiz', ...Object.keys(prizes)];
-        ctx.render(settingsView([prizes, onSave, onDelete, onAdd, onPendingChange], [sectors, prizeNames, changeSector, deleteSector, addSector]));
+        const prizes = getWheelPrizes();
+        const quizPrizes = getQuizPrizesFn();
+        const prizeNames = ['Quiz', 'Almost there!', ...Object.keys(prizes)];
+
+        ctx.render(settingsView(
+            [prizes, wheelHandlers.onSave, wheelHandlers.onDelete, wheelHandlers.onAdd, wheelHandlers.onPendingChange],
+            [quizPrizes, quizHandlers.onSave, quizHandlers.onDelete, quizHandlers.onAdd, quizHandlers.onPendingChange],
+            [sectors, prizeNames, changeSector, deleteSector, addSector]
+        ));
     }
+
+    update();
+}
+
+function definePrizeHandlers(getPrizes, setPrizes, update) {
+    let prizes = getPrizes();
+
+    function onSave(originalName, event) {
+        const parent = event.target.parentElement;
+        const nameInput = parent.querySelector('[name="name"]');
+        const qtyInput = parent.querySelector('[name="qty"]');
+        const name = nameInput.value;
+        const qty = qtyInput.value;
+
+        const newPrizes = {};
+        for (let [prizeName, prizeQty] of Object.entries(prizes)) {
+            if (prizeName == originalName) {
+                newPrizes[name] = Number(qty);
+            } else {
+                newPrizes[prizeName] = prizeQty;
+            }
+        }
+
+        prizes = newPrizes;
+        setPrizes(prizes);
+
+        nameInput.classList.remove('pending');
+        qtyInput.classList.remove('pending');
+
+        update();
+    }
+
+    function onDelete(originalName) {
+        const newPrizes = {};
+        for (let [prizeName, prizeQty] of Object.entries(prizes)) {
+            if (prizeName !== originalName) {
+                newPrizes[prizeName] = prizeQty;
+            }
+        }
+        prizes = newPrizes;
+        setPrizes(prizes);
+        update();
+    }
+
+    function onAdd() {
+        prizes['PrizeName'] = 0;
+        setPrizes(prizes);
+        update();
+    }
+
+    function onPendingChange(event) {
+        event.target.classList.add('pending');
+    }
+
+    return [() => prizes, { onSave, onDelete, onAdd, onPendingChange }];
 }

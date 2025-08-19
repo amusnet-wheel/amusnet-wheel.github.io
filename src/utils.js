@@ -1,4 +1,4 @@
-const storageVersion = '1.1';
+const storageVersion = '1.2';
 const storeName = 'amusnet-prize-wheel';
 
 /**
@@ -9,7 +9,8 @@ const storeName = 'amusnet-prize-wheel';
 const defaultStore = {
     version: storageVersion,
     wheelSectors: [],
-    prizes: {}
+    prizes: {},
+    quizPrizes: {}
 };
 
 export function getWheelSectors() {
@@ -18,6 +19,10 @@ export function getWheelSectors() {
 
 export function getPrizes() {
     return getStore().prizes;
+}
+
+export function getQuizPrizes() {
+    return getStore().quizPrizes;
 }
 
 /**
@@ -32,6 +37,13 @@ export function setWheelSectors(wheelSectors) {
  */
 export function setPrizes(prizes) {
     setStore({ prizes });
+}
+
+/**
+ * @param {Settings["quizPrizes"]} quizPrizes 
+ */
+export function setQuizPrizes(quizPrizes) {
+    setStore({ quizPrizes });
 }
 
 function getStore() {
@@ -69,6 +81,10 @@ function setStore(data) {
 
     if (data.prizes) {
         store.prizes = data.prizes;
+    }
+
+    if (data.quizPrizes) {
+        store.quizPrizes = data.quizPrizes;
     }
 
     localStorage.setItem(storeName, JSON.stringify(store));
