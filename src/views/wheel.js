@@ -2,7 +2,7 @@ import { html } from '@lit';
 import { getPrizes, getQuizPrizes, getWheelSectors, setPrizes } from '../utils.js';
 import { showPopup } from './popup.js';
 
-const SPIN_TIME = 8000;
+const SPIN_TIME = 11000;
 const PAUSE_AFTER_SPIN = 1000;
 
 /**
@@ -43,9 +43,8 @@ export function showWheel(ctx) {
 
     ctx.render(wheelTemplate(sectors, colorRange, spinWheel));
 
-    function isValidPrize(prize, qty, hasStockedQuiz) {
+    function isValidPrize(prize, qty) {
         if (prize === 'Almost there!') return true;
-        if (prize === 'Quiz') return hasStockedQuiz;
         return qty > 0;
     }
 
@@ -72,7 +71,7 @@ export function showWheel(ctx) {
         let qty = prize === 'Quiz' ? (hasStockedQuiz ? 1 : 0) : Number(prizes[prize]);
 
         // reroll until we land on a valid sector
-        while (!isValidPrize(prize, qty, hasStockedQuiz)) {
+        while (!isValidPrize(prize, qty)) {
             randomSectorOffset++;
             newSector--;
             prizeIndex = Math.abs(newSector % numSectors);
