@@ -85,6 +85,17 @@ export function showSettings(ctx) {
     update();
 }
 
+/**
+ * @param {() => Record<string, number>} getPrizes
+ * @param {(prizes: Record<string, number>) => void} setPrizes
+ * @param {() => void} update
+ * @returns {[() => Record<string, number>, {
+ *   onSave: (originalName: string, event: Event) => void,
+ *   onDelete: (originalName: string) => void,
+ *   onAdd: () => void,
+ *   onPendingChange: (event: Event) => void
+ * }]}
+ */
 function definePrizeHandlers(getPrizes, setPrizes, update) {
     let prizes = getPrizes();
 
@@ -95,6 +106,7 @@ function definePrizeHandlers(getPrizes, setPrizes, update) {
         const name = nameInput.value;
         const qty = qtyInput.value;
 
+        /** @type {Record<string, number>} */
         const newPrizes = {};
         for (let [prizeName, prizeQty] of Object.entries(prizes)) {
             if (prizeName == originalName) {
@@ -114,6 +126,7 @@ function definePrizeHandlers(getPrizes, setPrizes, update) {
     }
 
     function onDelete(originalName) {
+        /** @type {Record<string, number>} */
         const newPrizes = {};
         for (let [prizeName, prizeQty] of Object.entries(prizes)) {
             if (prizeName !== originalName) {
