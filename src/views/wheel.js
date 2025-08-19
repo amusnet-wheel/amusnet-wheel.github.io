@@ -1,8 +1,8 @@
 import { html } from '@lit';
-import { getPrizes, getWheelSectors, setPrizes } from '../utils.js';
+import { getPrizes, getQuizPrizes, getWheelSectors, setPrizes } from '../utils.js';
 import { showPopup } from './popup.js';
 
-const SPIN_TIME = 8000;
+const SPIN_TIME = 11000;
 const PAUSE_AFTER_SPIN = 1000;
 
 /**
@@ -14,7 +14,7 @@ const wheelTemplate = (sections, colorRange, spinWheel) => html`
         <fieldset class="ui-wheel-of-fortune">
             <ul id="wheel" style="--_items: ${sections.length}">
                 ${sections.map(
-    (name, index) => html` <li class="${'wheel-color-' + ((index + 1) % colorRange)}" style="--_idx: ${index + 1}">${name}</li> `
+    (name, index) => html` <li class="${'wheel-color-' + (index % colorRange + 1)}" style="--_idx: ${index + 1}">${name}</li> `
 )}
             </ul>
             <div class="center"></div>
@@ -43,13 +43,16 @@ export function showWheel(ctx) {
 
     ctx.render(wheelTemplate(sectors, colorRange, spinWheel));
 
+    function isValidPrize(prize, qty) {
+        if (prize === 'Almost there!') return true;
+        return qty > 0;
+    }
+
     function spinWheel() {
         const wheel = /** @type {HTMLElement} */ (document.getElementById('wheel'));
         const button = /** @type {HTMLButtonElement} */ (document.querySelector('.spin-trigger-button'));
 
-        if (!wheel || spinning) {
-            return;
-        }
+        if (!wheel || spinning) return;
 
         spinning = true;
         button.disabled = true;
@@ -61,21 +64,23 @@ export function showWheel(ctx) {
         let newSector = previousEndSector - randomSectorOffset;
         let prizeIndex = Math.abs(newSector % numSectors);
         let prize = sectors[prizeIndex];
-        let qty = Number(prizes[prize]);
 
-        while (prize != 'Quiz' && !qty) {
+        const quizPrizes = getQuizPrizes();
+        const hasStockedQuiz = Object.values(quizPrizes).some(qty => Number(qty) > 0);
+
+        let qty = prize === 'Quiz' ? (hasStockedQuiz ? 1 : 0) : Number(prizes[prize]);
+
+        // reroll until we land on a valid sector
+        while (!isValidPrize(prize, qty)) {
             randomSectorOffset++;
             newSector--;
             prizeIndex = Math.abs(newSector % numSectors);
             prize = sectors[prizeIndex];
-            qty = Number(prizes[prize]);
+            qty = prize === 'Quiz' ? (hasStockedQuiz ? 1 : 0) : Number(prizes[prize]);
         }
 
         const randomAdditionalDegrees = randomSectorOffset * sectorSize;
-
-        const newEndDegree =
-            previousEndSector * sectorSize - randomAdditionalDegrees;
-
+        const newEndDegree = previousEndSector * sectorSize - randomAdditionalDegrees;
         previousEndSector -= randomSectorOffset;
 
         const animation = wheel.animate(
@@ -98,11 +103,7 @@ export function showWheel(ctx) {
                 { boxShadow: '0 0 0 0.5vh rgba(190, 197, 197, 0), 0 0 0 0.5vh rgba(255, 215, 0, 1)', offset: 0.5 },
                 { boxShadow: '0 0 0 0.5vh rgb(190, 197, 197), 0 50px 0 0.5vh rgba(255, 215, 0, 0)' }
             ];
-            const timing = {
-                duration: PAUSE_AFTER_SPIN,
-                iterations: 1,
-                easing: 'ease-in-out'
-            };
+            const timing = { duration: PAUSE_AFTER_SPIN, iterations: 1, easing: 'ease-in-out' };
 
             document.querySelector('.ui-wheel-of-fortune .center').animate(keyframes, timing);
             document.querySelector('.ui-wheel-of-fortune .marker').animate(keyframes, timing);
@@ -111,8 +112,10 @@ export function showWheel(ctx) {
         setTimeout(() => {
             spinning = false;
 
-            if (prize == 'Quiz') {
+            if (prize === 'Quiz') {
                 ctx.page.redirect('/quiz');
+            } else if (prize === 'Almost there!') {
+                showPopup(ctx, prize, false, false);
             } else {
                 showPopup(ctx, prize);
                 prizes[prize]--;
