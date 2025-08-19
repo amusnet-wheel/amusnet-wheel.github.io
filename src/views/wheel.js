@@ -39,7 +39,7 @@ export function showWheel(ctx) {
     const sectors = getWheelSectors();
     const prizes = getPrizes();
     const numSectors = sectors.length;
-    const colorRange = numSectors > 8 ? numSectors / 2 : numSectors;
+    const colorRange = numSectors > 8 ? Math.ceil(numSectors / 2) : numSectors;
 
     ctx.render(wheelTemplate(sectors, colorRange, spinWheel));
 
